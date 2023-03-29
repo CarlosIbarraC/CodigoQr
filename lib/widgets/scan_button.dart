@@ -1,3 +1,4 @@
+import 'package:codigoqr/Utils/utils.dart';
 import 'package:codigoqr/providers/scans_list-provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -19,12 +20,17 @@ class ScanButton extends StatelessWidget {
           onPressed: () async {
             //String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
             //  '#3D8BEF', 'Cancelar', false, ScanMode.QR);
-            final barcodeScanRes = 'https//:telasplus.tk';
+            final barcodeScanRes = 'geo:4.719112,-74.043791';
+
+            if (barcodeScanRes == '-1') {
+              return;
+            }
 
             final scanListProvider =
                 Provider.of<ScanListProvider>(context, listen: false);
-            scanListProvider.nuevoScan(barcodeScanRes);
-            scanListProvider.nuevoScan('geo:15.33,15.66');
+            final nuevoScan = await scanListProvider.nuevoScan(barcodeScanRes);
+
+            launchURL(context, nuevoScan);
           }),
     );
   }
